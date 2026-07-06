@@ -1,6 +1,11 @@
-import { readFileSync, statSync, existsSync } from "fs";
-import { join, normalize, isAbsolute, sep } from "path";
+import { readFileSync, statSync, existsSync, realpathSync } from "fs";
+import { join, normalize, isAbsolute, sep, relative } from "path";
 import { McpError } from "../util/errors.js";
+
+function hasDisallowedPart(relativePath: string): boolean {
+    const parts = relativePath.split(/[/\\]/);
+    return parts.includes(".git") || parts.includes(".verified-repo-memory") || parts.some(p => p === "..");
+}
 
 function isSafePath(repoRoot: string, relativePath: string): boolean {
     if (isAbsolute(relativePath)) return false;
@@ -11,18 +16,33 @@ function isSafePath(repoRoot: string, relativePath: string): boolean {
     // Strict boundary check: absolute path must be the repo root exactly, or strictly within it (with trailing separator)
     if (absPath !== normalizedRepo && !absPath.startsWith(normalizedRepo + sep)) return false;
 
-    const parts = relativePath.split(/[/\\]/);
-    if (parts.includes(".git") || parts.includes(".verified-repo-memory")) return false;
-    if (parts.some(p => p === "..")) return false;
+    if (hasDisallowedPart(relativePath)) return false;
 
     return true;
+}
+
+function assertRealPathInsideRepo(repoRoot: string, absPath: string): void {
+    if (!existsSync(absPath)) return;
+
+    const repoRealPath = realpathSync(repoRoot);
+    const targetRealPath = realpathSync(absPath);
+    const resolvedRelative = relative(repoRealPath, targetRealPath);
+
+    if (resolvedRelative !== "" && (resolvedRelative.startsWith("..") || isAbsolute(resolvedRelative))) {
+        throw new McpError("Unsafe path traversal detected or disallowed directory access.");
+    }
+    if (hasDisallowedPart(resolvedRelative)) {
+        throw new McpError("Unsafe path traversal detected or disallowed directory access.");
+    }
 }
 
 export function safeJoin(repoRoot: string, relativePath: string): string {
     if (!isSafePath(repoRoot, relativePath)) {
         throw new McpError("Unsafe path traversal detected or disallowed directory access.");
     }
-    return normalize(join(repoRoot, relativePath));
+    const absPath = normalize(join(repoRoot, relativePath));
+    assertRealPathInsideRepo(repoRoot, absPath);
+    return absPath;
 }
 
 export function extractSnippetFromFile(repoRoot: string, relativePath: string, startLine: number, endLine: number, maxFileBytes: number): string {

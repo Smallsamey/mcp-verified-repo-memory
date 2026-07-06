@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { rmSync, mkdirSync, writeFileSync } from 'fs';
+import { rmSync, mkdirSync, symlinkSync, writeFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { extractSnippetFromFile } from '../src/verify/extract.js';
@@ -11,6 +11,7 @@ const __dirname = dirname(__filename);
 
 describe('JIT Verification', () => {
     const repoRoot = join(__dirname, 'fixtures', 'jit-repo');
+    const outsideRepoRoot = join(__dirname, 'fixtures', 'outside-repo');
     const testFile = join(repoRoot, 'test.txt');
 
     beforeEach(() => {
@@ -20,6 +21,7 @@ describe('JIT Verification', () => {
 
     afterEach(() => {
         rmSync(repoRoot, { recursive: true, force: true });
+        rmSync(outsideRepoRoot, { recursive: true, force: true });
     });
 
     it('validates unmodified citation', () => {
@@ -115,5 +117,34 @@ describe('JIT Verification', () => {
 
         const result = verifyCitation(citation, repoRoot, 2000000);
         expect(result.lastValidationStatus).toBe('MISSING');
+    });
+
+    it('rejects citation symlinks that resolve outside the repo', () => {
+        const outsideFile = join(outsideRepoRoot, 'secret.txt');
+        const linkPath = join(repoRoot, 'linked-secret.txt');
+        mkdirSync(outsideRepoRoot, { recursive: true });
+        writeFileSync(outsideFile, 'external secret\n');
+        symlinkSync(outsideFile, linkPath);
+
+        expect(() => extractSnippetFromFile(repoRoot, 'linked-secret.txt', 1, 1, 2000000)).toThrow(
+            /Unsafe path traversal|disallowed directory access/
+        );
+
+        const rawText = 'external secret';
+        const citation = {
+            id: 'cit-5',
+            path: 'linked-secret.txt',
+            startLine: 1,
+            endLine: 1,
+            snippetSha256: hashSnippet(normalizeSnippet(rawText)),
+            snippetText: rawText,
+            lastValidatedAt: null,
+            lastValidationStatus: null as any,
+            lastValidationDetail: null
+        };
+
+        const result = verifyCitation(citation, repoRoot, 2000000);
+        expect(result.lastValidationStatus).toBe('MISSING');
+        expect(result.lastValidationDetail).toMatch(/Unsafe path traversal|disallowed directory access/);
     });
 });
