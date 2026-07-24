@@ -24,7 +24,7 @@ export function registerForgetTool(server: McpServer, store: Store) {
 
                 return { content: [{ type: "text", text: JSON.stringify({ deleted, memoryId: args.memoryId }, null, 2) }] };
             } catch (e: any) {
-                return { content: [{ type: "text", text: JSON.stringify({ error: e.message, isError: true }, null, 2) }] };
+                return { content: [{ type: "text", text: JSON.stringify({ error: e.message, isError: true }, null, 2) }], isError: true };
             }
         }
     );
