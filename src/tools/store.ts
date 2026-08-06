@@ -106,7 +106,7 @@ export function registerStoreTool(server: McpServer, store: Store, config: Confi
 
                 return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
             } catch (e: any) {
-                return { content: [{ type: "text", text: JSON.stringify({ error: e.message, isError: true }, null, 2) }] };
+                return { content: [{ type: "text", text: JSON.stringify({ error: e.message, isError: true }, null, 2) }], isError: true };
             }
         }
     );

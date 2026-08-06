@@ -62,7 +62,7 @@ export function registerSearchTool(server: McpServer, store: Store, config: Conf
                     }]
                 };
             } catch (e: any) {
-                return { content: [{ type: "text", text: JSON.stringify({ error: e.message, isError: true }, null, 2) }] };
+                return { content: [{ type: "text", text: JSON.stringify({ error: e.message, isError: true }, null, 2) }], isError: true };
             }
         }
     );
