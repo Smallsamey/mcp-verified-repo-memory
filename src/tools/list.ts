@@ -70,7 +70,7 @@ export function registerListTool(server: McpServer, store: Store, config: Config
 
                 return { content: [{ type: "text", text: JSON.stringify({ items: results }, null, 2) }] };
             } catch (e: any) {
-                return { content: [{ type: "text", text: JSON.stringify({ error: e.message, isError: true }, null, 2) }] };
+                return { content: [{ type: "text", text: JSON.stringify({ error: e.message, isError: true }, null, 2) }], isError: true };
             }
         }
     );
